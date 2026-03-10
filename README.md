@@ -1,4 +1,5 @@
 # 🎬 Pick a Movie for Me
+[https://pick-movie-for-me.vercel.app/](https://pick-movie-for-me.vercel.app/)
 
 A smart movie recommendation web app built with **React**, **TypeScript**, and **Vite**. Browse movies by genre or top actors, search titles, and use the interactive quiz to find the perfect movie for your mood.
 
