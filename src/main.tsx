@@ -3,10 +3,9 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import { RouterProvider } from 'react-router-dom';
 import AppRouter from './Router/AppRouter.tsx';
-import Navbar from './components/Navbar/Navbar.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={AppRouter}/>
+    <RouterProvider router={AppRouter} />
   </React.StrictMode>,
 )

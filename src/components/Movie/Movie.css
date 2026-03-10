@@ -1,37 +1,70 @@
 .movie {
-  width: 160px;
-  height: 300px;
+  width: 180px;
+  height: 320px;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  background: #111;
+  flex-shrink: 0;
+}
+
+.movie:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 20px 40px rgba(255, 77, 77, 0.3), 0 4px 15px rgba(0, 0, 0, 0.6);
 }
 
 .movie-image {
-  height: 80%;
-  background-color: lightseagreen;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
-  border: 1px solid #ffff;
-}
-
-.movie-image:hover {
-  box-shadow: 0 0 10px #fff;
+  position: relative;
 }
 
 .movie-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.4s ease;
+  display: block;
 }
 
+.movie:hover .movie-image img {
+  transform: scale(1.08);
+}
+
+/* Gradient overlay */
+.movie-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.9) 0%,
+      rgba(0, 0, 0, 0.3) 50%,
+      transparent 100%);
+  transition: opacity 0.3s ease;
+}
 
 .movie-title {
-  height: 20%;
-  line-height: 1.5rem;
-  max-height: 3rem;
-  text-overflow: ellipsis;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 15px 10px 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #fff;
+  z-index: 1;
   overflow: hidden;
-  white-space: wrap;
-  text-decoration: underline;
-  font-size: 1.3rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  transition: color 0.3s;
 }
 
-.movie-title:hover {
-  color: crimson;
+.movie:hover .movie-title {
+  color: #ff6b6b;
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './WatchMovie.css';
 
-const WatchMovie = ({ movie }) => {
+const WatchMovie = ({ movie }: { movie: any }) => {
   const [isClicked, setIsClicked] = useState(false);
   return (
     <>

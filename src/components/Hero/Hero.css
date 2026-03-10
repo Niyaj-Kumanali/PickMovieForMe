@@ -1,43 +1,72 @@
-#Hero{
-    height: 150vh;
+#Hero {
+    min-height: 100vh;
     position: relative;
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at center, rgba(255, 77, 77, 0.07) 0%, transparent 70%);
 }
 
-.hero-content{
+.hero-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 10px;
-    height: 40%;
+    gap: 16px;
+    text-align: center;
+    padding: 40px;
+    max-width: 750px;
 }
 
-.hero-content h1{
+.hero-content h1 {
     font-size: 3.2rem;
-    letter-spacing: 4px;
-    text-shadow: 0px 0px 5px #fff;
+    font-weight: 800;
+    letter-spacing: 3px;
+    line-height: 1.15;
+    background: linear-gradient(135deg, #fff 40%, #ff6b6b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-.hero-content p{
-    font-size: 1.5rem;
-    line-height: 2rem;
-    color: #f1f1f1;
-}
-
-.hero-btn{
-    margin-top: 40px;
-    padding: 14px 18px;
+.hero-content p {
     font-size: 1.2rem;
-    font-weight: 600;
-    background-color: crimson;
+    line-height: 1.8;
+    color: #aaa;
+}
+
+.hero-btn {
+    margin-top: 30px;
+    padding: 16px 44px;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #ff4d4d, #c0392b);
     color: #fff;
     border: none;
-    border-radius: 2px;
-    transition: 0.5s;
+    border-radius: 50px;
+    box-shadow: 0 6px 30px rgba(255, 77, 77, 0.45);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-.hero-btn:hover{
-    background-color: #fff;
-    color: crimson;
+.hero-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.15);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.hero-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(255, 77, 77, 0.6);
+}
+
+.hero-btn:hover::before {
+    opacity: 1;
 }

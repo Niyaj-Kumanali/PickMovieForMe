@@ -1,127 +1,132 @@
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
-import { useRef, useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+
 const Navbar = () => {
   const [inputValue, setInputValue] = useState('');
-  const searchInputRef = useRef(null);
-  const inputRef = useRef(null);
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+
   const genres = ['Action', 'Comedy', 'Drama', 'Thriller', 'Adventure'];
   const actors = [
     'Tom Hanks',
-    'Leonardo DeCaprio',
+    'Leonardo DiCaprio',
     'Brad Pitt',
-    'Robert De Nitro',
+    'Robert De Niro',
   ];
 
   const handleSearchBtn = () => {
-    searchInputRef.current.classList.toggle('hideSearch');
-    inputRef.current && inputRef.current.focus();
-    // }
+    setIsSearchVisible(!isSearchVisible);
   };
 
-  const handleSeachKeyDown = (event: { key: string }) => {
-    if (event.key === 'Enter') {
+  useEffect(() => {
+    if (isSearchVisible && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isSearchVisible]);
+
+  const handleSearchKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' && inputValue.trim()) {
       navigate('/all/page/1', { state: inputValue });
       setInputValue('');
-      searchInputRef.current.classList.add('hideSearch');
+      setIsSearchVisible(false);
     }
   };
-  const handleSearchChange = (event: any) => {
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value.toLowerCase());
   };
 
   return (
-    <div id="navbar">
+    <nav id="navbar">
       <div className="nav-main">
-        <div className="nav-left" onClick={()=> searchInputRef.current.classList.add('hideSearch')}>
-          <Link to={'/'}>
+        <div className="nav-left">
+          <Link to="/" onClick={() => setIsSearchVisible(false)}>
             <div className="nav-logo">
               <img
                 src="https://pickamovieforme.b-cdn.net/wp-content/uploads/2020/09/logo_c.png"
-                alt=""
+                alt="Logo"
               />
             </div>
           </Link>
         </div>
-        <div className="nav-right" >
+
+        <div className="nav-right">
           <div className="nav-items">
             <div className="nav-link">
-              <Link to={'/'}>
-                <p>
-                  <span>Movie picker</span>
-                </p>
+              <Link to="/">
+                <span>Movie picker</span>
               </Link>
             </div>
+
             <div className="nav-link genres">
-              <p>
-                <span>
-                  Top Genres <i className="ri-arrow-drop-down-line"></i>
-                </span>
-              </p>
-              <div className="top-genres-hover">
+              <span>
+                Top Genres <i className="ri-arrow-drop-down-line"></i>
+              </span>
+              <div className="dropdown-menu">
                 {genres.map((genre, index) => (
-                  <Link to={`/${genre}/page/1`} key={index}>
+                  <Link to={`/${genre.toLowerCase()}/page/1`} key={index}>
                     <span>{genre}</span>
                   </Link>
                 ))}
               </div>
             </div>
+
             <div className="nav-link actors">
-              <p>
-                <span>
-                  Top Actors <i className="ri-arrow-drop-down-line"></i>
-                </span>
-              </p>
-              <div className="top-actors-hover">
+              <span>
+                Top Actors <i className="ri-arrow-drop-down-line"></i>
+              </span>
+              <div className="dropdown-menu">
                 {actors.map((actor, index) => (
-                  <Link to={`/${actor}/page/1`} key={index}>
+                  <Link to={`/${actor.toLowerCase()}/page/1`} key={index}>
                     <span>{actor}</span>
                   </Link>
                 ))}
               </div>
             </div>
+
             <div className="nav-link">
-              <Link to={'/blog/'}>
-                <p>
-                  <span>Blog</span>
-                </p>
+              <Link to="/blog">
+                <span>Blog</span>
               </Link>
             </div>
           </div>
+
           <div className="nav-icons">
-            <button className="search-btn nav-link">
-              <i className="ri-search-line" onClick={handleSearchBtn}></i>
-              <div className="search-input hideSearch" ref={searchInputRef}>
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={inputValue}
-                  placeholder="Search"
-                  onChange={handleSearchChange}
-                  onKeyDown={handleSeachKeyDown}
-                />
-              </div>
-            </button>
-            <a href={'https://www.facebook.com'}>
-              <button className="fb-btn nav-link">
+            <div className="search-container">
+              <button className="icon-btn search-trigger" onClick={handleSearchBtn}>
+                <i className="ri-search-line"></i>
+              </button>
+              {isSearchVisible && (
+                <div className="search-box">
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={inputValue}
+                    placeholder="Search movies..."
+                    onChange={handleSearchChange}
+                    onKeyDown={handleSearchKeyDown}
+                  />
+                </div>
+              )}
+            </div>
+
+            <div className="social-links">
+              <a href="https://facebook.com" target="_blank" rel="noreferrer" className="icon-btn">
                 <i className="ri-facebook-circle-fill"></i>
-              </button>
-            </a>
-            <a href={'https://www.instagram.com'}>
-              <button className="insta-btn nav-link">
+              </a>
+              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="icon-btn">
                 <i className="ri-instagram-line"></i>
-              </button>
-            </a>
-            <a href={'https://www.youtube.com'}>
-              <button className="yt-btn nav-link">
+              </a>
+              <a href="https://youtube.com" target="_blank" rel="noreferrer" className="icon-btn">
                 <i className="ri-youtube-fill"></i>
-              </button>
-            </a>
+              </a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
 

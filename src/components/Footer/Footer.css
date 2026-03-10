@@ -3,33 +3,45 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #101010;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   height: 70px;
   font-size: 0.7rem;
-  color: #999;
+  color: #666;
   font-weight: 600;
-  padding: 0 65px;
-  letter-spacing: 3px;
-  margin-bottom: 80px;
-  border: 1px solid #ccc;
-  box-shadow: 1px 1px 10px #ccc;
+  padding: 0 50px;
+  letter-spacing: 2px;
+}
+
+.copyright {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.copyright-icon {
+  font-size: 1rem;
+  color: #555;
 }
 
 .footer-right {
   display: flex;
-  gap: 5px;
+  gap: 20px;
 }
 
 .footer-right .footer-link {
   padding: 0 10px;
-  transition: 0.5s;
+  transition: color 0.3s ease;
   font-size: 0.7rem;
-  color: #999;
+  color: #666;
   font-weight: 600;
 }
+
 .footer-right a:first-child {
-  border-right: 2px solid #999;
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
 }
+
 .footer-right .footer-link:hover {
-  color: crimson;
+  color: #ff4d4d;
 }

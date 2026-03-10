@@ -1,58 +1,72 @@
-#HeroBottom{
-    background-color: #111111c4;
-    box-shadow: 0px 0px 10px #fff;
-    padding: 50px 65px;
-    border: 1px solid #fff;
-
+#HeroBottom {
+    background: rgba(10, 10, 10, 0.9);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 70px 80px;
 }
 
-.heroBottom-content{
-    height: 100%;
-}
-
-
-.heroBottom-top-part{
+.heroBottom-top-part {
     display: flex;
     justify-content: space-around;
     text-align: center;
     line-height: 1.5;
-    letter-spacing: 3px;
-    margin-bottom: 50px;
+    letter-spacing: 2px;
+    margin-bottom: 60px;
+    padding-bottom: 60px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.top-part-box h1{
+.top-part-box h1 {
     font-size: 3.5rem;
-    color: crimson;
-    font-weight: 900;
-}
-.top-part-box h6{
-    font-size: 1rem;
+    color: #ff4d4d;
+    font-weight: 800;
 }
 
-.heroBottom-bottom-part{
-    margin-top: 20px;
+.top-part-box h6 {
+    font-size: 0.8rem;
+    color: #777;
+    letter-spacing: 3px;
+    margin-top: 4px;
+}
+
+.heroBottom-bottom-part {
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 25px;
+    max-width: 850px;
+    margin-inline: auto;
 }
 
-.heroBottom-bottom-part ul{
-    margin-left: 20px;
-    line-height: 2rem;
-    font-size: 1.2rem;
-
-}
-.heroBottom-bottom-part h1{
-    font-size: 1.5rem;
-}
-.heroBottom-bottom-part p{
-    font-size: 1.2rem;
-    line-height: 2rem;
+.heroBottom-bottom-part h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #eee;
 }
 
-.heroBottom-bottom-part a{
+.heroBottom-bottom-part p {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: #aaa;
+}
+
+.heroBottom-bottom-part ul {
+    margin-left: 24px;
+    line-height: 2.2rem;
+    font-size: 1.05rem;
+    color: #aaa;
+}
+
+.heroBottom-bottom-part li::marker {
+    color: #ff4d4d;
+}
+
+.heroBottom-bottom-part a {
+    color: #ff6b6b;
     text-decoration: underline;
+    text-underline-offset: 3px;
 }
-.heroBottom-bottom-part a:hover{
-    color: crimson;
+
+.heroBottom-bottom-part a:hover {
+    color: #ff4d4d;
 }

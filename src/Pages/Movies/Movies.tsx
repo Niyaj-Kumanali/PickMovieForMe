@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import Movie from '../../components/Movie/Movie';
 import './Movies.css';
 import { action } from '../../data/action';
@@ -8,198 +8,158 @@ import { adventure } from '../../data/adventure';
 import { comedy } from '../../data/comedy';
 import { Link, useLocation } from 'react-router-dom';
 
+const ITEMS_PER_PAGE = 24;
+
+const allMovies = [...action, ...drama, ...comedy, ...thriller, ...adventure];
+
+function getMoviesByGenre(genre: string, actor: string) {
+  const g = genre.toLowerCase();
+  const a = actor.toLowerCase();
+
+  if (g === 'action') return action;
+  if (g === 'thriller') return thriller;
+  if (g === 'comedy') return comedy;
+  if (g === 'drama') return drama;
+  if (g === 'adventure') return adventure;
+
+  // Actor filtering: show all movies, filter by actor name keywords
+  if (a === 'tom hanks') {
+    return allMovies.filter((m) => {
+      const title = m.title.originalTitleText.text.toLowerCase();
+      return (
+        title.includes('forrest') ||
+        title.includes('cast away') ||
+        title.includes('saving') ||
+        title.includes('green mile') ||
+        title.includes('da vinci') ||
+        title.includes('captain phillips') ||
+        title.includes('sully') ||
+        title.includes('philadelphia') ||
+        title.includes('toy story')
+      );
+    });
+  }
+  if (a === 'leonardo dicaprio') {
+    return allMovies.filter((m) => {
+      const title = m.title.originalTitleText.text.toLowerCase();
+      return (
+        title.includes('wolf') ||
+        title.includes('inception') ||
+        title.includes('revenant') ||
+        title.includes('great gatsby') ||
+        title.includes('titanic') ||
+        title.includes('aviator') ||
+        title.includes('shutter island') ||
+        title.includes('departed')
+      );
+    });
+  }
+  if (a === 'brad pitt') {
+    return allMovies.filter((m) => {
+      const title = m.title.originalTitleText.text.toLowerCase();
+      return (
+        title.includes('fight club') ||
+        title.includes('seven') ||
+        title.includes('troy') ||
+        title.includes('inglourious') ||
+        title.includes('moneyball') ||
+        title.includes('fury') ||
+        title.includes('babylon') ||
+        title.includes('bullet train') ||
+        title.includes('once upon')
+      );
+    });
+  }
+  if (a === 'robert de niro') {
+    return allMovies.filter((m) => {
+      const title = m.title.originalTitleText.text.toLowerCase();
+      return (
+        title.includes('goodfellas') ||
+        title.includes('godfather') ||
+        title.includes('heat') ||
+        title.includes('casino') ||
+        title.includes('deer hunter') ||
+        title.includes('joker') ||
+        title.includes('family')
+      );
+    });
+  }
+
+  return allMovies;
+}
+
 const Movies = ({ genre, actor }: { genre: string; actor: string }) => {
-  const [movieData, setMovieData] = useState<any[]>([]);
-  const [data, setData] = useState<any[]>([]);
-  const [start, setStart] = useState(0);
-  const [end, setEnd] = useState(24);
-  const [currentPage, setCurrentPage] = useState(1);
   const location = useLocation();
-  const [value, setValue] = useState(location.state);
-  const [filteredMovies, setFilteredMovies] = useState<any[]>([]);
+  const searchValue: string | null = location.state;
 
-  const movies = () => {
-    genre = genre.toLowerCase();
-    actor = actor.toLowerCase();
-    const allMovies = [
-      ...action,
-      ...drama,
-      ...comedy,
-      ...thriller,
-      ...adventure,
-    ];
-    if (genre === 'action') {
-      return action;
-    } else if (genre === 'thriller') {
-      return thriller;
-    } else if (genre === 'comedy') {
-      return comedy;
-    } else if (genre === 'drama') {
-      return drama;
-    } else if (genre === 'adventure') {
-      return adventure;
-    } else if (actor === 'tom hanks') {
-      return allMovies.filter((movie) =>
-        movie.title.originalTitleText.text.toLowerCase().includes('t')
+  const baseMovies = useMemo(() => getMoviesByGenre(genre, actor), [genre, actor]);
+
+  const displayMovies = useMemo(() => {
+    if (searchValue && searchValue.trim()) {
+      return baseMovies.filter((m) =>
+        m.title.originalTitleText.text.toLowerCase().includes(searchValue.toLowerCase())
       );
-    } else if (actor === 'leonardo decaprio') {
-      return allMovies.filter((movie) =>
-        movie.title.originalTitleText.text.toLowerCase().includes('l')
-      );
-    } else if (actor === 'brad pitt') {
-      return allMovies.filter((movie) =>
-        movie.title.originalTitleText.text.toLowerCase().includes('b')
-      );
-    } else if (actor === 'robert de nitro') {
-      return allMovies.filter((movie) =>
-        movie.title.originalTitleText.text.toLowerCase().includes('r')
-      );
-    } else {
-      return allMovies;
     }
-  };
+    return baseMovies;
+  }, [baseMovies, searchValue]);
 
-  const moviesMemo = useMemo(() => movies(), [genre, actor]);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  // let filteredMovies = useMemo(() => {
-  //   if (value !== null) {
-  //     return moviesMemo.filter((movie) =>
-  //       movie.title.originalTitleText.text.toLowerCase().includes(value)
-  //     ) || moviesMemo;
-  //   }
-  //   return []
-  // }, [value]);
-
+  // Reset to page 1 when genre/actor/search changes
   useEffect(() => {
-    console.log({value: value})
-    if (value != null) {
-      const movies = moviesMemo.filter((movie) =>
-        movie.title.originalTitleText.text.toLowerCase().includes(value)
-      );
-      setFilteredMovies(movies);
-    }
-    else{
-      setFilteredMovies(movieData)
-    }
-  }, [value]);
-
-  // console.log('filter', filteredMovies);
-  // console.log('memo', moviesMemo);
-
-  useEffect(() => {
-    if (location.state !== value) {
-      setValue(location.state || value);
-    }
-  }, [location.state, value]);
-
-  useEffect(() => {
-    setMovieData(moviesMemo);
-    // setData(moviesMemo);
-    // filteredMovies = [];
-    setFilteredMovies([])
-    setStart(0);
-    setEnd(24);
     setCurrentPage(1);
-  }, [genre, actor]);
+  }, [genre, actor, searchValue]);
 
+  const totalPages = Math.ceil(displayMovies.length / ITEMS_PER_PAGE);
+  const start = (currentPage - 1) * ITEMS_PER_PAGE;
+  const end = start + ITEMS_PER_PAGE;
+  const pageMovies = displayMovies.slice(start, end);
+
+  const headingLabel =
+    genre !== 'all' ? genre.charAt(0).toUpperCase() + genre.slice(1) : actor;
 
   return (
     <div id="Movies">
       <h1 className="movies-heading">
-        The Best {genre !== 'all' ? genre : actor} Movies
+        {searchValue
+          ? `Results for "${searchValue}"`
+          : `Best ${headingLabel} Movies`}
       </h1>
-      <div className="movies-container">
-        {(filteredMovies.length == 0 ? movieData : filteredMovies)
-          .slice(start, end)
-          .map((movie, index) => (
-            <Movie key={index} movie={movie.title} genre={genre} />
-          ))}
-      </div>
 
-      <div className="pageNavigation">
-        {new Array(
-          Math.round(
-            (filteredMovies.length == 0 ? movieData : filteredMovies).length /
-              24
-          )
-        )
-          .fill(0)
-          .map((_, index) => (
-            <Link
-              key={index}
-              to={`/${genre !== 'all' ? genre : actor}/page/${index + 1}`}
-            >
-              <button
-                onClick={() => {
-                  setCurrentPage(index + 1);
-                  setStart(index * 24);
-                  setEnd((index + 1) * 24);
-                }}
-                key={index}
-                style={{
-                  borderColor: currentPage === index + 1 ? 'red' : '#fff',
-                  color: currentPage === index + 1 ? 'red' : '#fff',
-                }}
-              >
-                {index + 1}
-              </button>
-            </Link>
-          ))}
-      </div>
+      {displayMovies.length === 0 ? (
+        <div className="no-results">
+          <i className="ri-film-line"></i>
+          <p>No movies found. Try a different search.</p>
+        </div>
+      ) : (
+        <>
+          <div className="movies-container">
+            {pageMovies.map((movie, index) => (
+              <Movie key={`${movie.title.id}-${index}`} movie={movie.title} genre={genre} />
+            ))}
+          </div>
+
+          {totalPages > 1 && (
+            <div className="pageNavigation">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <Link
+                  key={page}
+                  to={`/${genre !== 'all' ? genre.toLowerCase() : actor.toLowerCase()}/page/${page}`}
+                >
+                  <button
+                    onClick={() => setCurrentPage(page)}
+                    className={currentPage === page ? 'active-page' : ''}
+                  >
+                    {page}
+                  </button>
+                </Link>
+              ))}
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 };
 
 export default Movies;
-
-// useEffect(() => {
-//   const fetchData = async () => {
-//     try {
-//       const response = await axios.post(
-//         'https://imdb188.p.rapidapi.com/api/v1/getPopularMovies',
-//         {
-//           country: {
-//             anyPrimaryCountries: ['US'],
-//           },
-//           limit: 200,
-//           releaseDate: {
-//             releaseDateRange: {
-//               end: '2029-12-31',
-//               start: '2000-01-01',
-//             },
-//           },
-//           userRatings: {
-//             aggregateRatingRange: { max: 10, min: 6 },
-//             ratingsCountRange: { min: 1000 },
-//           },
-//           genre: {
-//             allGenreIds: [genre],
-//           },
-//           runtime: {
-//             runtimeRangeMinutes: { max: 120, min: 0 },
-//           },
-//         },
-//         {
-//           headers: {
-//             'content-type': 'application/json',
-//             'X-RapidAPI-Key':
-//               '26f79d3809mshf55664184a5390cp192cb8jsnce83c3736db1',
-//             'X-RapidAPI-Host': 'imdb188.p.rapidapi.com',
-//           },
-//         }
-//       );
-
-//       console.log(response.data.data.list[0]);
-//       // Assuming setMovieData is a state updater function
-//       // Make sure to define setMovieData using useState
-//       console.log(response.data.data.list);
-
-//       // setMovieData(response.data.data.list);
-
-//     } catch (error) {
-//       console.error('Error making IMDb API request:', error.message);
-//     }
-//   };
-
-//   fetchData();
-// }, [genre]);
